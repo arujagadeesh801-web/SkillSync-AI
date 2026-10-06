@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Study Assistant | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #2f3437;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #555b60;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #22272b;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #292e33;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #737a80;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .assistant-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #777e84;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .question-form {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .question-input {
+            flex: 1;
+            padding: 14px 15px;
+            border: 1px solid #d5d9dd;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #30353a;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .question-input:focus {
+            border-color: #6b7278;
+        }
+
+        .ask-button {
+            border: none;
+            border-radius: 7px;
+            padding: 0 22px;
+            background: #3f4449;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .ask-button:hover {
+            background: #2f3438;
+        }
+
+        .ask-button:disabled {
+            background: #858b90;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            border-radius: 7px;
+            background: #f5eeee;
+            border: 1px solid #e1caca;
+            color: #8a4141;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .answer-card {
+            margin-top: 25px;
+            padding: 24px;
+            border: 1px solid #e1e4e8;
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .answer-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #3d4348;
+            margin-bottom: 14px;
+        }
+
+        .question-display {
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            background: #ffffff;
+            border: 1px solid #e3e6e8;
+            border-radius: 7px;
+            color: #555c62;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .answer-content {
+            color: #4d545a;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .suggestions {
+            margin-top: 28px;
+        }
+
+        .suggestions h2 {
+            font-size: 18px;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .suggestion-button {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #555c62;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .suggestion-button:hover {
+            background: #f3f4f5;
+            border-color: #cdd1d5;
+        }
+
+        .tips {
+            margin-top: 28px;
+            padding: 22px;
+            border: 1px solid #e1e4e8;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .tips h2 {
+            font-size: 17px;
+            color: #343a40;
+            margin-bottom: 14px;
+        }
+
+        .tips ul {
+            padding-left: 20px;
+        }
+
+        .tips li {
+            color: #6e757b;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 6px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            color: #858b90;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .assistant-card {
+                padding: 22px;
+            }
+
+            .question-form {
+                flex-direction: column;
+            }
+
+            .question-input {
+                min-height: 48px;
+            }
+
+            .ask-button {
+                min-height: 46px;
+            }
+
+            .suggestion-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+
+        <div class="brand">
+            Student AI Platform
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <h1>AI Study Assistant</h1>
+
+            <p>
+                Ask questions about programming, AI, machine learning,
+                academics, study planning, or career preparation.
+            </p>
+
+        </div>
+
+
+        <div class="assistant-card">
+
+            <h2 class="section-title">
+                Ask Your Question
+            </h2>
+
+            <p class="section-description">
+                Enter your question below and the AI Study Assistant
+                will provide a helpful explanation.
+            </p>
+
+
+            {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="/study-assistant"
+                class="question-form"
+                id="studyForm"
+            >
+
+                <input
+                    type="text"
+                    name="question"
+                    id="question"
+                    class="question-input"
+                    placeholder="Example: Explain machine learning in simple terms..."
+                    value="{{ question or '' }}"
+                    required
+                    autocomplete="off"
+                >
+
+                <button
+                    type="submit"
+                    class="ask-button"
+                    id="askButton"
+                >
+                    Ask AI
+                </button>
+
+            </form>
+
+
+            {% if answer %}
+
+            <div class="answer-card">
+
+                <div class="answer-title">
+                    AI Response
+                </div>
+
+
+                {% if question %}
+
+                <div class="question-display">
+                    <strong>Your Question:</strong><br>
+                    {{ question }}
+                </div>
+
+                {% endif %}
+
+
+                <div class="answer-content">
+                    {{ answer }}
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="suggestions">
+
+                <h2>
+                    Suggested Questions
+                </h2>
+
+
+                <div class="suggestion-grid">
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="Explain machine learning in simple terms."
+                    >
+                        Explain machine learning in simple terms.
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="How should I start learning Python?"
+                    >
+                        How should I start learning Python?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="Explain the difference between AI, machine learning, and deep learning."
+                    >
+                        What is the difference between AI, ML and Deep Learning?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="Give me a study plan for learning data structures and algorithms."
+                    >
+                        Give me a DSA study plan.
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="How can I prepare for an AI or machine learning interview?"
+                    >
+                        How can I prepare for an AI/ML interview?
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        data-question="Explain APIs and how they are used in software development."
+                    >
+                        Explain APIs in simple terms.
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="tips">
+
+                <h2>
+                    Study Tips
+                </h2>
+
+                <ul>
+                    <li>
+                        Ask specific questions to get more useful explanations.
+                    </li>
+
+                    <li>
+                        Ask the assistant to explain difficult topics with examples.
+                    </li>
+
+                    <li>
+                        Use the assistant as a learning support tool rather than
+                        relying on it as your only source of information.
+                    </li>
+
+                    <li>
+                        Break large topics into smaller questions for better learning.
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-note">
+            AI responses are generated for educational assistance.
+        </div>
+
+    </main>
+
+
+    <script>
+        const form = document.getElementById("studyForm");
+        const button = document.getElementById("askButton");
+        const questionInput = document.getElementById("question");
+
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.textContent = "Thinking...";
+        });
+
+
+        const suggestionButtons =
+            document.querySelectorAll(".suggestion-button");
+
+        suggestionButtons.forEach(function (buttonElement) {
+
+            buttonElement.addEventListener("click", function () {
+
+                questionInput.value =
+                    buttonElement.getAttribute("data-question");
+
+                questionInput.focus();
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>

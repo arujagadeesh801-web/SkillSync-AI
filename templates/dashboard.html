@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Student AI Platform</title>
+
+    <style>
+
+        /* =========================
+           RESET
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Arial, sans-serif;
+
+            background: #f7f8fa;
+
+            color: #26313b;
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #ffffff;
+
+            border-right: 1px solid #e3e7eb;
+
+            padding: 24px 16px;
+
+            z-index: 100;
+        }
+
+
+        /* =========================
+           BRAND
+        ========================== */
+
+        .sidebar-brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 0 8px;
+
+            margin-bottom: 36px;
+        }
+
+        .sidebar-icon {
+            width: 39px;
+            height: 39px;
+
+            border-radius: 10px;
+
+            background: #46566b;
+
+            color: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .sidebar-brand span {
+            font-size: 15px;
+
+            font-weight: 700;
+
+            color: #293541;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+
+        .nav-section {
+            margin-bottom: 29px;
+        }
+
+        .nav-title {
+            padding: 0 10px;
+
+            margin-bottom: 9px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #9aa3ad;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+        }
+
+        .nav-link {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            width: 100%;
+
+            padding: 11px 10px;
+
+            margin-bottom: 3px;
+
+            border-radius: 8px;
+
+            color: #69737e;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: #f0f3f6;
+
+            color: #344150;
+        }
+
+        .nav-link.active {
+            background: #e9edf3;
+
+            color: #3f5064;
+
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 18px;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           SIDEBAR FOOTER
+        ========================== */
+
+        .sidebar-footer {
+            position: absolute;
+
+            bottom: 20px;
+
+            left: 16px;
+
+            right: 16px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #e3e7eb;
+        }
+
+        .logout-link {
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 10px;
+
+            color: #69737e;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            border-radius: 8px;
+        }
+
+        .logout-link:hover {
+            background: #f0f3f6;
+
+            color: #344150;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================== */
+
+        .main-content {
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 34px 40px;
+        }
+
+        .content-wrapper {
+            max-width: 1180px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =========================
+           MOBILE HEADER
+        ========================== */
+
+        .mobile-header {
+            display: none;
+        }
+
+
+        /* =========================
+           PAGE HEADER
+        ========================== */
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+
+            font-weight: 700;
+
+            color: #263442;
+
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            font-size: 14px;
+
+            color: #7b858f;
+        }
+
+        .user-info {
+            text-align: right;
+
+            padding-top: 3px;
+        }
+
+        .user-name {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #3b4855;
+
+            margin-bottom: 3px;
+        }
+
+        .user-email {
+            font-size: 12px;
+
+            color: #929ba4;
+        }
+
+
+        /* =========================
+           WELCOME CARD
+        ========================== */
+
+        .welcome-card {
+            background: #e8edf3;
+
+            border: 1px solid #d9e0e7;
+
+            border-radius: 14px;
+
+            padding: 25px 27px;
+
+            margin-bottom: 25px;
+        }
+
+        .welcome-card h2 {
+            font-size: 19px;
+
+            color: #334457;
+
+            margin-bottom: 7px;
+        }
+
+        .welcome-card p {
+            max-width: 760px;
+
+            font-size: 13px;
+
+            color: #6e7b88;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            position: relative;
+
+            background: #ffffff;
+
+            border: 1px solid #e1e5e9;
+
+            border-radius: 12px;
+
+            padding: 21px;
+
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 4px;
+            height: 100%;
+
+            background: #718096;
+        }
+
+        .stat-card:nth-child(2)::before {
+            background: #708f7b;
+        }
+
+        .stat-card:nth-child(3)::before {
+            background: #b2925b;
+        }
+
+        .stat-label {
+            font-size: 12px;
+
+            color: #89939d;
+
+            margin-bottom: 9px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            color: #354352;
+
+            margin-bottom: 5px;
+        }
+
+        .stat-description {
+            font-size: 11px;
+
+            color: #9aa2aa;
+        }
+
+
+        /* =========================
+           SECTION HEADER
+        ========================== */
+
+        .section-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+
+            color: #344150;
+        }
+
+        .section-header p {
+            font-size: 12px;
+
+            color: #929ba4;
+        }
+
+
+        /* =========================
+           TOOL CARDS
+        ========================== */
+
+        .tools-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 32px;
+        }
+
+        .tool-card {
+            position: relative;
+
+            background: #ffffff;
+
+            border: 1px solid #e1e5e9;
+
+            border-radius: 13px;
+
+            padding: 22px;
+
+            text-decoration: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.15s ease;
+        }
+
+        .tool-card:hover {
+            border-color: #c6ced7;
+
+            box-shadow:
+                0 8px 22px rgba(50, 65, 80, 0.07);
+
+            transform: translateY(-2px);
+        }
+
+        .tool-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #edf1f5;
+
+            color: #526276;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 16px;
+        }
+
+        .tool-card:nth-child(2) .tool-icon {
+            background: #edf3ef;
+
+            color: #607c69;
+        }
+
+        .tool-card:nth-child(3) .tool-icon {
+            background: #f4f0e9;
+
+            color: #90784f;
+        }
+
+        .tool-card:nth-child(4) .tool-icon {
+            background: #efedf3;
+
+            color: #70677e;
+        }
+
+        .tool-card h3 {
+            font-size: 15px;
+
+            color: #354352;
+
+            margin-bottom: 7px;
+        }
+
+        .tool-card p {
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            color: #7b858f;
+
+            margin-bottom: 15px;
+        }
+
+        .tool-action {
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #526276;
+        }
+
+
+        /* =========================
+           RECENT ACTIVITY
+        ========================== */
+
+        .activity-card {
+            background: #ffffff;
+
+            border: 1px solid #e1e5e9;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+        }
+
+        .empty-state {
+            text-align: center;
+
+            padding: 27px 15px;
+
+            color: #929ba4;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        .main-footer {
+            text-align: center;
+
+            padding: 15px 0 5px;
+
+            font-size: 11px;
+
+            color: #a3aab1;
+        }
+
+
+        /* =========================
+           OVERLAY
+        ========================== */
+
+        .sidebar-overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(25, 32, 40, 0.25);
+
+            z-index: 90;
+        }
+
+
+        /* =========================
+           TABLET
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .main-content {
+                padding: 30px 25px;
+            }
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                left: -260px;
+
+                transition: left 0.25s ease;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+
+                padding: 18px 16px;
+            }
+
+            .mobile-header {
+                display: flex;
+
+                align-items: center;
+
+                justify-content: space-between;
+
+                margin-bottom: 24px;
+            }
+
+            .mobile-brand {
+                display: flex;
+
+                align-items: center;
+
+                gap: 9px;
+            }
+
+            .mobile-brand-icon {
+                width: 35px;
+                height: 35px;
+
+                background: #46566b;
+
+                color: #ffffff;
+
+                border-radius: 8px;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                font-size: 11px;
+
+                font-weight: 700;
+            }
+
+            .mobile-brand span {
+                font-size: 14px;
+
+                font-weight: 700;
+
+                color: #344150;
+            }
+
+            .menu-button {
+                width: 38px;
+                height: 38px;
+
+                border: 1px solid #dce1e6;
+
+                background: #ffffff;
+
+                border-radius: 8px;
+
+                cursor: pointer;
+
+                font-size: 18px;
+
+                color: #52606d;
+            }
+
+            .page-header {
+                display: block;
+
+                margin-bottom: 22px;
+            }
+
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .user-info {
+                text-align: left;
+
+                margin-top: 10px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+
+                gap: 12px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+
+                gap: 12px;
+            }
+
+        }
+
+
+        /* =========================
+           SMALL MOBILE
+        ========================== */
+
+        @media (max-width: 400px) {
+
+            .welcome-card {
+                padding: 20px;
+            }
+
+            .stat-card {
+                padding: 18px;
+            }
+
+            .tool-card {
+                padding: 19px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-icon">
+                SA
+            </div>
+
+            <span>
+                Student AI Platform
+            </span>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Main
+            </div>
+
+
+            <a
+                href="/dashboard"
+                class="nav-link active"
+            >
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="/predictor"
+                class="nav-link"
+            >
+                <span class="nav-icon">▣</span>
+                Performance Predictor
+            </a>
+
+
+            <a
+                href="/study-assistant"
+                class="nav-link"
+            >
+                <span class="nav-icon">✦</span>
+                AI Study Assistant
+            </a>
+
+
+            <a
+                href="/resume-analyzer"
+                class="nav-link"
+            >
+                <span class="nav-icon">▤</span>
+                Resume Analyzer
+            </a>
+
+
+            <a
+                href="/quiz"
+                class="nav-link"
+            >
+                <span class="nav-icon">?</span>
+                Quiz
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Account
+            </div>
+
+
+            <a
+                href="/history"
+                class="nav-link"
+            >
+                <span class="nav-icon">◷</span>
+                History
+            </a>
+
+
+          
+
+        </div>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                href="/logout"
+                class="logout-link"
+            >
+                <span class="nav-icon">↪</span>
+                Sign out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         OVERLAY
+    ========================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+        onclick="closeSidebar()"
+    ></div>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="main-content">
+
+        <div class="content-wrapper">
+
+
+            <!-- MOBILE HEADER -->
+
+            <div class="mobile-header">
+
+                <div class="mobile-brand">
+
+                    <div class="mobile-brand-icon">
+                        SA
+                    </div>
+
+                    <span>
+                        Student AI Platform
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="menu-button"
+                    onclick="openSidebar()"
+                    aria-label="Open navigation"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Overview of your academic activity and tools.
+                    </p>
+
+                </div>
+
+
+                <div class="user-info">
+
+                    <div class="user-name">
+                        {{ profile.full_name }}
+                    </div>
+
+                    <div class="user-email">
+                        {{ profile.email }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WELCOME -->
+
+            <div class="welcome-card">
+
+                <h2>
+                    Welcome, {{ profile.full_name }}
+                </h2>
+
+                <p>
+                    Use your academic insights, performance predictions,
+                    learning tools, and personal history to stay consistent
+                    with your goals.
+                </p>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+
+            <div class="stats-grid">
+
+
+                <!-- PREDICTIONS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Predictions
+                    </div>
+
+                    <div class="stat-value">
+                        {{ prediction_count }}
+                    </div>
+
+                    <div class="stat-description">
+                        Academic predictions
+                    </div>
+
+                </div>
+
+
+                <!-- LATEST SCORE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Latest Score
+                    </div>
+
+                    <div class="stat-value">
+                        —
+                    </div>
+
+                    <div class="stat-description">
+                        Most recent prediction
+                    </div>
+
+                </div>
+
+
+                <!-- QUIZ RESULTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-label">
+                        Quiz Results
+                    </div>
+
+                    <div class="stat-value">
+                        {{ quiz_count }}
+                    </div>
+
+                    <div class="stat-description">
+                        Completed quizzes
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ACADEMIC TOOLS -->
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        Academic tools
+                    </h2>
+                </div>
+
+                <p>
+                    Available tools
+                </p>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+
+                <!-- PERFORMANCE PREDICTOR -->
+
+                <a
+                    href="/predictor"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ↗
+                    </div>
+
+                    <h3>
+                        Performance Predictor
+                    </h3>
+
+                    <p>
+                        Predict your expected exam score using
+                        your current academic habits and performance data.
+                    </p>
+
+                    <span class="tool-action">
+                        Make a prediction →
+                    </span>
+
+                </a>
+
+
+                <!-- STUDY ASSISTANT -->
+
+                <a
+                    href="/study-assistant"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ✦
+                    </div>
+
+                    <h3>
+                        AI Study Assistant
+                    </h3>
+
+                    <p>
+                        Get study guidance, explanations, and
+                        learning support based on your needs.
+                    </p>
+
+                    <span class="tool-action">
+                        Open assistant →
+                    </span>
+
+                </a>
+
+
+                <!-- RESUME ANALYZER -->
+
+                <a
+                    href="/resume-analyzer"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        CV
+                    </div>
+
+                    <h3>
+                        Smart Resume Analyzer
+                    </h3>
+
+                    <p>
+                        Analyze your resume and identify areas
+                        that can be improved for career opportunities.
+                    </p>
+
+                    <span class="tool-action">
+                        Analyze resume →
+                    </span>
+
+                </a>
+
+
+                <!-- QUIZ -->
+
+                <a
+                    href="/quiz"
+                    class="tool-card"
+                >
+
+                    <div class="tool-icon">
+                        ?
+                    </div>
+
+                    <h3>
+                        Knowledge Quiz
+                    </h3>
+
+                    <p>
+                        Test your knowledge through short quizzes
+                        and track your learning performance.
+                    </p>
+
+                    <span class="tool-action">
+                        Take a quiz →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        Recent activity
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="activity-card">
+
+                <div class="empty-state">
+                    Your recent academic activity will appear here.
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="main-footer">
+
+                Student AI Platform · Academic tools for students
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        function openSidebar() {
+
+            document
+                .getElementById("sidebar")
+                .classList
+                .add("open");
+
+            document
+                .getElementById("sidebarOverlay")
+                .classList
+                .add("show");
+
+        }
+
+
+        function closeSidebar() {
+
+            document
+                .getElementById("sidebar")
+                .classList
+                .remove("open");
+
+            document
+                .getElementById("sidebarOverlay")
+                .classList
+                .remove("show");
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

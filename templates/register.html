@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Student AI Platform</title>
+
+    <style>
+
+        /* =========================
+           RESET
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================== */
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Arial, sans-serif;
+
+            background: #ffffff;
+
+            color: #2f3439;
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px 20px;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================== */
+
+        .register-container {
+            width: 100%;
+            max-width: 440px;
+        }
+
+
+        /* =========================
+           BRAND
+        ========================== */
+
+        .brand {
+            text-align: center;
+
+            margin-bottom: 24px;
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+
+            margin: 0 auto 13px;
+
+            background: #3f4449;
+
+            color: #ffffff;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+        }
+
+        .brand h1 {
+            font-size: 25px;
+
+            font-weight: 700;
+
+            color: #252a2e;
+
+            margin-bottom: 6px;
+        }
+
+        .brand p {
+            font-size: 14px;
+
+            color: #73787d;
+        }
+
+
+        /* =========================
+           REGISTER CARD
+        ========================== */
+
+        .register-card {
+            background: #e3e3e3;
+
+            border: 1px solid #d2d2d2;
+
+            border-radius: 18px;
+
+            padding: 34px;
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.09);
+        }
+
+
+        /* =========================
+           CARD HEADER
+        ========================== */
+
+        .register-card h2 {
+            font-size: 21px;
+
+            font-weight: 650;
+
+            color: #292d31;
+
+            margin-bottom: 7px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            color: #70757a;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================== */
+
+        .error-message {
+            background: #fff5f5;
+
+            border: 1px solid #edcaca;
+
+            color: #b42318;
+
+            border-radius: 9px;
+
+            padding: 11px 12px;
+
+            font-size: 13px;
+
+            line-height: 1.4;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #3f4449;
+
+            margin-bottom: 7px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 14px;
+
+            background: #ffffff;
+
+            border: 1px solid #c7c7c7;
+
+            border-radius: 9px;
+
+            color: #292d31;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-group input:hover {
+            border-color: #a9a9a9;
+        }
+
+        .form-group input:focus {
+            border-color: #6f7478;
+
+            box-shadow:
+                0 0 0 3px rgba(90, 90, 90, 0.12);
+        }
+
+        .form-group input::placeholder {
+            color: #999999;
+        }
+
+
+        /* =========================
+           PASSWORD NOTE
+        ========================== */
+
+        .password-note {
+            font-size: 12px;
+
+            color: #777c80;
+
+            margin-top: 6px;
+        }
+
+
+        /* =========================
+           REGISTER BUTTON
+        ========================== */
+
+        .register-button {
+            width: 100%;
+
+            height: 46px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #3f4449;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 3px;
+
+            transition:
+                background 0.2s ease,
+                transform 0.1s ease;
+        }
+
+        .register-button:hover {
+            background: #3983ce;
+        }
+
+        .register-button:active {
+            transform: translateY(1px);
+        }
+
+
+        /* =========================
+           LOGIN LINK
+        ========================== */
+
+        .login-link {
+            text-align: center;
+
+            margin-top: 21px;
+
+            font-size: 14px;
+
+            color: #70757a;
+        }
+
+        .login-link a {
+            color: #303438;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        .footer-note {
+            text-align: center;
+
+            margin-top: 19px;
+
+            font-size: 12px;
+
+            color: #9a9a9a;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 480px) {
+
+            body {
+                padding: 18px 16px;
+            }
+
+            .register-container {
+                max-width: 100%;
+            }
+
+            .register-card {
+                padding: 27px 20px;
+
+                border-radius: 15px;
+            }
+
+            .brand {
+                margin-bottom: 21px;
+            }
+
+            .brand-icon {
+                width: 46px;
+                height: 46px;
+            }
+
+            .brand h1 {
+                font-size: 22px;
+            }
+
+            .brand p {
+                font-size: 13px;
+            }
+
+            .register-card h2 {
+                font-size: 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <div class="register-container">
+
+
+        <!-- =========================
+             BRAND
+        ========================== -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                SA
+            </div>
+
+            <h1>
+                Student AI Platform
+            </h1>
+
+            <p>
+                Your academic performance companion
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             REGISTER CARD
+        ========================== -->
+
+        <div class="register-card">
+
+
+            <h2>
+                Create your account
+            </h2>
+
+            <p class="subtitle">
+                Join the platform to track your academic performance
+                and access student-focused tools.
+            </p>
+
+
+            <!-- ERROR -->
+
+            {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- FORM -->
+
+            <form
+                method="POST"
+                action="{{ url_for('register') }}"
+            >
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="full_name">
+                        Full name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        placeholder="Enter your full name"
+                        value="{{ full_name or '' }}"
+                        required
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value="{{ email or '' }}"
+                        required
+                        autocomplete="email"
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                    >
+
+                    <div class="password-note">
+                        Use at least 6 characters.
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Create Account
+                </button>
+
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="{{ url_for('login') }}">
+                    Sign in
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <div class="footer-note">
+            Student AI Platform · Academic tools for students
+        </div>
+
+
+    </div>
+
+
+</body>
+</html>

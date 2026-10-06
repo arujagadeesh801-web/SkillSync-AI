@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Performance Predictor | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #2f3437;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #555b60;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #22272b;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #292e33;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #737a80;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #777e84;
+            font-size: 14px;
+            margin-bottom: 26px;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #454b50;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d5d9dd;
+            border-radius: 7px;
+            background: #ffffff;
+            color: #30353a;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #6b7278;
+        }
+
+        .form-group small {
+            margin-top: 6px;
+            color: #8a9095;
+            font-size: 12px;
+        }
+
+        .button-wrapper {
+            margin-top: 28px;
+        }
+
+        .predict-btn {
+            width: 100%;
+            border: none;
+            border-radius: 7px;
+            padding: 14px 20px;
+            background: #3f4449;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .predict-btn:hover {
+            background: #2f3438;
+        }
+
+        .predict-btn:disabled {
+            background: #858b90;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            margin-bottom: 22px;
+            padding: 12px 15px;
+            border-radius: 7px;
+            background: #f5eeee;
+            border: 1px solid #e1caca;
+            color: #8a4141;
+            font-size: 14px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border: 1px solid #e4e7e9;
+            border-radius: 9px;
+            padding: 20px;
+        }
+
+        .info-card h3 {
+            font-size: 15px;
+            color: #3d4348;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #737a80;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            color: #858b90;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <div class="brand">
+            Student AI Platform
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+            <h1>Performance Predictor</h1>
+            <p>
+                Enter your academic and study-related information to estimate
+                your expected examination performance.
+            </p>
+        </div>
+
+
+        <div class="card">
+
+            <h2 class="section-title">
+                Enter Your Details
+            </h2>
+
+            <p class="section-description">
+                Provide accurate information for a more meaningful prediction.
+                Your prediction will also be saved in your personal history.
+            </p>
+
+
+            {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %}
+
+
+            <form method="POST" action="/predict" id="predictionForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="study_hours">
+                            Study Hours
+                        </label>
+
+                        <input
+                            type="number"
+                            id="study_hours"
+                            name="study_hours"
+                            step="0.1"
+                            min="0"
+                            max="24"
+                            placeholder="Example: 6.5"
+                            required
+                        >
+
+                        <small>
+                            Average hours spent studying per day.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="attendance">
+                            Attendance (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="attendance"
+                            name="attendance"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            placeholder="Example: 85"
+                            required
+                        >
+
+                        <small>
+                            Your average class attendance percentage.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="sleep_hours">
+                            Sleep Hours
+                        </label>
+
+                        <input
+                            type="number"
+                            id="sleep_hours"
+                            name="sleep_hours"
+                            step="0.1"
+                            min="0"
+                            max="24"
+                            placeholder="Example: 7"
+                            required
+                        >
+
+                        <small>
+                            Average hours of sleep per day.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="internet_usage">
+                            Internet Usage
+                        </label>
+
+                        <input
+                            type="number"
+                            id="internet_usage"
+                            name="internet_usage"
+                            step="0.1"
+                            min="0"
+                            max="24"
+                            placeholder="Example: 4"
+                            required
+                        >
+
+                        <small>
+                            Average daily internet usage in hours.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="assignments_completed">
+                            Assignments Completed
+                        </label>
+
+                        <input
+                            type="number"
+                            id="assignments_completed"
+                            name="assignments_completed"
+                            step="1"
+                            min="0"
+                            placeholder="Example: 8"
+                            required
+                        >
+
+                        <small>
+                            Number of assignments completed recently.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="previous_score">
+                            Previous Score
+                        </label>
+
+                        <input
+                            type="number"
+                            id="previous_score"
+                            name="previous_score"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            placeholder="Example: 72"
+                            required
+                        >
+
+                        <small>
+                            Your previous examination score.
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="button-wrapper">
+                    <button
+                        type="submit"
+                        class="predict-btn"
+                        id="predictButton"
+                    >
+                        Predict Performance
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <h3>Academic Factors</h3>
+
+                <p>
+                    The model considers your previous score,
+                    attendance and assignment completion.
+                </p>
+            </div>
+
+
+            <div class="info-card">
+                <h3>Study Habits</h3>
+
+                <p>
+                    Study hours, sleep duration and internet usage
+                    are included in the prediction.
+                </p>
+            </div>
+
+
+            <div class="info-card">
+                <h3>Prediction History</h3>
+
+                <p>
+                    Your prediction is stored securely and can be
+                    viewed later from the History section.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="footer-note">
+            Prediction results are estimates generated using a machine learning model.
+        </div>
+
+    </main>
+
+
+    <script>
+        const form = document.getElementById("predictionForm");
+        const button = document.getElementById("predictButton");
+
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.textContent = "Analyzing...";
+        });
+    </script>
+
+</body>
+</html>

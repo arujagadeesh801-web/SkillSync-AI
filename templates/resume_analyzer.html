@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Resume Analyzer | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #2f3437;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #555b60;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #22272b;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1050px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #292e33;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #737a80;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #777e84;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .error-message {
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            border-radius: 7px;
+            background: #f5eeee;
+            border: 1px solid #e1caca;
+            color: #8a4141;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .upload-area {
+            border: 2px dashed #cfd4d8;
+            border-radius: 10px;
+            padding: 42px 25px;
+            text-align: center;
+            background: #fafbfc;
+            transition: 0.2s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #9da4aa;
+            background: #f6f7f8;
+        }
+
+        .upload-area.dragover {
+            border-color: #6b7278;
+            background: #f1f3f4;
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 14px;
+        }
+
+        .upload-area h3 {
+            font-size: 17px;
+            color: #3d4348;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            color: #858b90;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 7px;
+            background: #3f4449;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .file-label:hover {
+            background: #2f3438;
+        }
+
+        #resumeFile {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 14px;
+            color: #555c62;
+            font-size: 13px;
+        }
+
+        .analyze-button {
+            width: 100%;
+            margin-top: 20px;
+            border: none;
+            border-radius: 7px;
+            padding: 14px 20px;
+            background: #3f4449;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .analyze-button:hover {
+            background: #2f3438;
+        }
+
+        .analyze-button:disabled {
+            background: #858b90;
+            cursor: not-allowed;
+        }
+
+        .result-section {
+            margin-top: 28px;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 18px;
+        }
+
+        .result-card h2 {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .overview {
+            background: #fafbfc;
+            border: 1px solid #e4e7e9;
+            border-radius: 8px;
+            padding: 18px;
+            color: #555c62;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .result-box {
+            background: #fafbfc;
+            border: 1px solid #e4e7e9;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .result-box h3 {
+            font-size: 15px;
+            color: #3d4348;
+            margin-bottom: 12px;
+        }
+
+        .result-box ul {
+            padding-left: 20px;
+        }
+
+        .result-box li {
+            color: #666d73;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 7px;
+        }
+
+        .result-box p {
+            color: #666d73;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .empty-result {
+            color: #858b90;
+            font-size: 13px;
+        }
+
+        .new-analysis {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 11px 18px;
+            background: #3f4449;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .new-analysis:hover {
+            background: #2f3438;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 9px;
+            padding: 19px;
+        }
+
+        .info-card h3 {
+            font-size: 15px;
+            color: #3d4348;
+            margin-bottom: 8px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #737a80;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            color: #858b90;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .card,
+            .result-card {
+                padding: 22px;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .upload-area {
+                padding: 32px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+
+        <div class="brand">
+            Student AI Platform
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <h1>Smart Resume Analyzer</h1>
+
+            <p>
+                Upload your resume and get AI-powered feedback on your
+                skills, missing areas, and improvement suggestions.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2 class="section-title">
+                Upload Your Resume
+            </h2>
+
+            <p class="section-description">
+                Upload your resume in PDF or DOCX format for analysis.
+            </p>
+
+
+            {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form
+                method="POST"
+                action="/analyze-resume"
+                enctype="multipart/form-data"
+                id="resumeForm"
+            >
+
+                <div
+                    class="upload-area"
+                    id="uploadArea"
+                >
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        Drop your resume here
+                    </h3>
+
+                    <p>
+                        Supported formats: PDF, DOCX
+                    </p>
+
+                    <label
+                        for="resumeFile"
+                        class="file-label"
+                    >
+                        Choose Resume
+                    </label>
+
+                    <input
+                        type="file"
+                        id="resumeFile"
+                        name="resume"
+                        accept=".pdf,.docx"
+                        required
+                    >
+
+                    <div
+                        class="file-name"
+                        id="fileName"
+                    >
+                        No file selected
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="analyze-button"
+                    id="analyzeButton"
+                >
+                    Analyze Resume
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% set resume_analysis = analysis or {} %}
+        {% set overview_text = resume_analysis.overview or 'No overview available yet.' %}
+        {% set skills_list = resume_analysis.skills or [] %}
+        {% set missing_skills_list = resume_analysis.missing_skills or [] %}
+        {% set suggestions_list = resume_analysis.suggestions or [] %}
+
+        {% if resume_analysis %}
+
+        <div class="result-section">
+
+            <div class="result-card">
+
+                <h2>
+                    Resume Overview
+                </h2>
+
+                <div class="overview">
+                    {{ overview_text }}
+                </div>
+
+            </div>
+
+
+            <div class="result-grid">
+
+                <div class="result-card">
+
+                    <h2>
+                        Skills Identified
+                    </h2>
+
+                    {% if skills_list %}
+
+                    <div class="result-box">
+
+                        <ul>
+
+                            {% for skill in skills_list %}
+
+                            <li>
+                                {{ skill }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="result-box">
+
+                        <p class="empty-result">
+                            No specific skills were extracted separately.
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <h2>
+                        Missing Skills
+                    </h2>
+
+                    {% if missing_skills_list %}
+
+                    <div class="result-box">
+
+                        <ul>
+                            {% for skill in missing_skills_list %}
+
+                            <li>
+                                {{ skill }}
+                            </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="result-box">
+
+                        <p class="empty-result">
+                            No missing skills were identified.
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="result-card">
+
+                <h2>
+                    Improvement Suggestions
+                </h2>
+
+                {% if suggestions_list %}
+
+                <div class="result-box">
+
+                    <ul>
+
+                        {% for suggestion in suggestions_list %}
+
+                        <li>
+                            {{ suggestion }}
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+                {% else %}
+
+                <div class="result-box">
+
+                    <p class="empty-result">
+                        No additional suggestions are available.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <a
+                href="/resume-analyzer"
+                class="new-analysis"
+            >
+                Analyze Another Resume
+            </a>
+
+        </div>
+
+        {% endif %}
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h3>
+                    Resume Review
+                </h3>
+
+                <p>
+                    The AI reviews the content of your uploaded resume
+                    and provides educational feedback.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>
+                    Skill Analysis
+                </h3>
+
+                <p>
+                    Identify relevant technical skills and areas that
+                    could strengthen your profile.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>
+                    Career Suggestions
+                </h3>
+
+                <p>
+                    Get practical suggestions to improve your resume
+                    for academic and career opportunities.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-note">
+            AI-generated resume feedback is intended as a learning and career-support tool.
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const fileInput = document.getElementById("resumeFile");
+        const fileName = document.getElementById("fileName");
+        const uploadArea = document.getElementById("uploadArea");
+        const resumeForm = document.getElementById("resumeForm");
+        const analyzeButton = document.getElementById("analyzeButton");
+
+
+        fileInput.addEventListener("change", function () {
+
+            if (fileInput.files.length > 0) {
+
+                const file = fileInput.files[0];
+
+                fileName.textContent = file.name;
+
+            } else {
+
+                fileName.textContent = "No file selected";
+
+            }
+
+        });
+
+
+        uploadArea.addEventListener("dragover", function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.add("dragover");
+
+        });
+
+
+        uploadArea.addEventListener("dragleave", function () {
+
+            uploadArea.classList.remove("dragover");
+
+        });
+
+
+        uploadArea.addEventListener("drop", function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.remove("dragover");
+
+            if (event.dataTransfer.files.length > 0) {
+
+                const file = event.dataTransfer.files[0];
+
+                const fileExtension =
+                    file.name.split(".").pop().toLowerCase();
+
+                if (
+                    fileExtension !== "pdf" &&
+                    fileExtension !== "docx"
+                ) {
+
+                    alert("Please upload a PDF or DOCX file.");
+
+                    return;
+                }
+
+                fileInput.files = event.dataTransfer.files;
+
+                fileName.textContent = file.name;
+            }
+
+        });
+
+
+        resumeForm.addEventListener("submit", function () {
+
+            if (fileInput.files.length === 0) {
+
+                return;
+
+            }
+
+            analyzeButton.disabled = true;
+            analyzeButton.textContent = "Analyzing Resume...";
+
+        });
+
+    </script>
+
+</body>
+</html>

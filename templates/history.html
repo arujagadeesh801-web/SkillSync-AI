@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>History | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #2f3437;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #555b60;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #22272b;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #292e33;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #737a80;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            margin-bottom: 22px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 7px;
+        }
+
+        .card-header p {
+            color: #777e84;
+            font-size: 14px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        thead {
+            background: #f4f5f6;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4a5055;
+            border-bottom: 1px solid #dfe2e5;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 12px;
+            font-size: 13px;
+            color: #5d646a;
+            border-bottom: 1px solid #eceeef;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #fafbfc;
+        }
+
+        .score {
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        .performance {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .excellent {
+            background: #e8f3eb;
+            color: #35633f;
+        }
+
+        .good {
+            background: #edf2f6;
+            color: #465b6b;
+        }
+
+        .average {
+            background: #f5f1e7;
+            color: #756332;
+        }
+
+        .needs-improvement {
+            background: #f5eaea;
+            color: #7a4141;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 20px;
+            color: #3d4348;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            max-width: 500px;
+            margin: 0 auto 22px;
+            color: #777e84;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #3f4449;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #2f3438;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #7a8187;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 24px;
+            color: #858b90;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+
+        <div class="brand">
+            Student AI Platform
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+
+            <h1>Prediction History</h1>
+
+            <p>
+                Review your previous performance predictions and track
+                your academic progress over time.
+            </p>
+
+        </div>
+
+
+        {% if predictions %}
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total Predictions
+                </div>
+
+                <div class="stat-value">
+                    {{ predictions|length }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Latest Prediction
+                </div>
+
+                <div class="stat-value">
+
+                    {% if predictions[0].predicted_score is defined %}
+                        {{ predictions[0].predicted_score }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>Your Prediction Records</h2>
+
+                <p>
+                    Your most recent prediction records are shown below.
+                </p>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Study Hours</th>
+                            <th>Attendance</th>
+                            <th>Sleep Hours</th>
+                            <th>Internet Usage</th>
+                            <th>Assignments</th>
+                            <th>Previous Score</th>
+                            <th>Predicted Score</th>
+                            <th>Performance</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for prediction in predictions %}
+
+                        <tr>
+
+                            <td>
+                                {% if prediction.created_at %}
+                                    {{ prediction.created_at[:10] }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ prediction.study_hours }}
+                            </td>
+
+                            <td>
+                                {{ prediction.attendance }}%
+                            </td>
+
+                            <td>
+                                {{ prediction.sleep_hours }}
+                            </td>
+
+                            <td>
+                                {{ prediction.internet_usage }}
+                            </td>
+
+                            <td>
+                                {{ prediction.assignments_completed }}
+                            </td>
+
+                            <td>
+                                {{ prediction.previous_score }}
+                            </td>
+
+                            <td class="score">
+                                {{ prediction.predicted_score }}
+                            </td>
+
+
+                            {% set performance_class =
+                                prediction.performance
+                                |lower
+                                |replace(' ', '-')
+                            %}
+
+                            <td>
+
+                                <span class="performance {{ performance_class }}">
+                                    {{ prediction.performance }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="card">
+
+            <div class="empty-state">
+
+                <h2>No Prediction History Yet</h2>
+
+                <p>
+                    You haven't made any performance predictions yet.
+                    Start your first prediction to see your academic
+                    performance history here.
+                </p>
+
+                <a href="/predictor" class="btn btn-primary">
+                    Make Your First Prediction
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="footer-note">
+            Your prediction history is private and associated with your account.
+        </div>
+
+    </main>
+
+</body>
+</html>

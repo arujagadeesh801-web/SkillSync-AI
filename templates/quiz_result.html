@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quiz Result | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #2f3337;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #3f4449;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 22px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #e3e3e3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+        }
+
+        .score-circle .percentage {
+            font-size: 34px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .score-circle .label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .score-text {
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .score-detail {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .results-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .results-card h2 {
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .question-result {
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .question-result:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-number {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 7px;
+        }
+
+        .question-text {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .correct {
+            color: #2f6b3f;
+            font-weight: 600;
+        }
+
+        .incorrect {
+            color: #9b3d3d;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3f4449;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2f3337;
+        }
+
+        .btn-secondary {
+            background: #e3e3e3;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d5d5d5;
+        }
+
+        .empty-message {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            padding: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 16px 20px;
+            }
+
+            .navbar h2 {
+                font-size: 18px;
+            }
+
+            .navbar a {
+                margin-left: 10px;
+                font-size: 13px;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+
+            .result-card,
+            .results-card {
+                padding: 22px;
+            }
+
+            .score-circle {
+                width: 130px;
+                height: 130px;
+            }
+
+            .score-circle .percentage {
+                font-size: 29px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Student AI Platform</h2>
+
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/quiz">Quiz</a>
+            <a href="/history">History</a>
+        </div>
+    </nav>
+
+
+    <main class="container">
+
+        <div class="page-title">
+            <h1>Quiz Result</h1>
+            <p>Here is your performance from the latest quiz.</p>
+        </div>
+
+
+        <section class="result-card">
+
+            <div class="score-circle">
+                <div class="percentage">
+                    {{ percentage }}%
+                </div>
+
+                <div class="label">
+                    Score
+                </div>
+            </div>
+
+            <div class="score-text">
+                {{ score }} / {{ total_questions }}
+            </div>
+
+            <div class="score-detail">
+                Questions answered correctly
+            </div>
+
+        </section>
+
+
+        <section class="results-card">
+
+            <h2>Question Review</h2>
+
+            {% if results %}
+
+                {% for result in results %}
+
+                    <div class="question-result">
+
+                        <div class="question-number">
+                            Question {{ loop.index }}
+                        </div>
+
+                        {% if result.question %}
+                            <div class="question-text">
+                                {{ result.question }}
+                            </div>
+                        {% endif %}
+
+
+                        {% if result.user_answer %}
+                            <div class="answer">
+                                Your answer:
+                                <span class="{% if result.correct %}correct{% else %}incorrect{% endif %}">
+                                    {{ result.user_answer }}
+                                </span>
+                            </div>
+                        {% endif %}
+
+
+                        {% if result.correct_answer %}
+                            <div class="answer">
+                                Correct answer:
+                                <span class="correct">
+                                    {{ result.correct_answer }}
+                                </span>
+                            </div>
+                        {% endif %}
+
+
+                        {% if result.correct is defined %}
+
+                            {% if result.correct %}
+                                <div class="answer correct">
+                                    Correct answer
+                                </div>
+                            {% else %}
+                                <div class="answer incorrect">
+                                    Incorrect answer
+                                </div>
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-message">
+                    Your quiz result has been recorded successfully.
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <div class="actions">
+
+            <a href="/quiz" class="btn btn-primary">
+                Take Quiz Again
+            </a>
+
+            <a href="/history" class="btn btn-secondary">
+                View History
+            </a>
+
+            <a href="/dashboard" class="btn btn-secondary">
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

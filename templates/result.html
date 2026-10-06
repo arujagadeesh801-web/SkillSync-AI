@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction Result | Student AI Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #2f3437;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3f4449;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #555b60;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #22272b;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #292e33;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #737a80;
+            font-size: 15px;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #777e84;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 56px;
+            font-weight: 700;
+            color: #3f4449;
+            margin-bottom: 10px;
+        }
+
+        .score-unit {
+            font-size: 18px;
+            color: #777e84;
+            font-weight: 500;
+        }
+
+        .performance {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 9px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .excellent {
+            background: #e8f3eb;
+            color: #35633f;
+        }
+
+        .good {
+            background: #edf2f6;
+            color: #465b6b;
+        }
+
+        .average {
+            background: #f5f1e7;
+            color: #756332;
+        }
+
+        .needs-improvement {
+            background: #f5eaea;
+            color: #7a4141;
+        }
+
+        .section {
+            margin-top: 28px;
+            background: #ffffff;
+            border: 1px solid #e1e4e8;
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .section h2 {
+            font-size: 19px;
+            color: #343a40;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #777e84;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: 190px 1fr 65px;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .feature-name {
+            font-size: 14px;
+            color: #454b50;
+            font-weight: 600;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 9px;
+            background: #eceff1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            background: #6b7278;
+            border-radius: 10px;
+        }
+
+        .feature-value {
+            font-size: 13px;
+            color: #777e84;
+            text-align: right;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3f4449;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #2f3438;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #454b50;
+            border: 1px solid #d5d9dd;
+        }
+
+        .btn-secondary:hover {
+            background: #f4f5f6;
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 22px;
+            color: #858b90;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 28px auto;
+            }
+
+            .result-card,
+            .section {
+                padding: 22px;
+            }
+
+            .score {
+                font-size: 48px;
+            }
+
+            .feature-row {
+                grid-template-columns: 1fr;
+                gap: 7px;
+            }
+
+            .feature-value {
+                text-align: left;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+        <div class="brand">
+            Student AI Platform
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Dashboard
+        </a>
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-header">
+            <h1>Prediction Result</h1>
+            <p>
+                Here is your estimated academic performance based on the information provided.
+            </p>
+        </div>
+
+
+        <div class="result-card">
+
+            <div class="score-label">
+                Predicted Examination Score
+            </div>
+
+            <div class="score">
+                {{ prediction if prediction is defined else predicted_score }}
+                <span class="score-unit">/ 100</span>
+            </div>
+
+            {% set performance_class = performance|lower|replace(' ', '-') %}
+
+            <div class="performance {{ performance_class }}">
+                {{ performance }}
+            </div>
+
+        </div>
+
+
+        {% if recommendations %}
+
+        <div class="section">
+
+            <h2>Personalized Recommendations</h2>
+
+            <p class="section-description">
+                Based on your current study habits, these areas may help improve
+                your academic performance.
+            </p>
+
+            <div class="feature-list">
+
+                {% for recommendation in recommendations %}
+
+                <div class="feature-row">
+
+                    <div class="feature-name">
+                        {{ recommendation }}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        {% if feature_importance %}
+
+        <div class="section">
+
+            <h2>Model Feature Importance</h2>
+
+            <p class="section-description">
+                These values show how strongly each input feature contributed
+                to the machine learning model's prediction.
+            </p>
+
+            <div class="feature-list">
+
+                {% for name, value in feature_importance %}
+
+                    {% set percentage = (value * 100) | round(1) %}
+
+                    <div class="feature-row">
+
+                        <div class="feature-name">
+                            {{ name.replace('_', ' ').title() }}
+                        </div>
+
+                        <div class="bar-container">
+                            <div
+                                class="bar"
+                                style="width: {{ percentage }}%;"
+                            ></div>
+                        </div>
+
+                        <div class="feature-value">
+                            {{ percentage }}%
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="actions">
+
+            <a href="/predictor" class="btn btn-primary">
+                New Prediction
+            </a>
+
+            <a href="/history" class="btn btn-secondary">
+                View History
+            </a>
+
+            <a href="/dashboard" class="btn btn-secondary">
+                Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="note">
+            This prediction is an estimate generated by a machine learning model
+            and should be used as a learning-support tool.
+        </div>
+
+    </main>
+
+</body>
+</html>
