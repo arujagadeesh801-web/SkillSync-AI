@@ -543,13 +543,10 @@ def train_model_from_dataset():
 
 
     model = RandomForestRegressor(n_estimators=200, random_state=42)
-
     model.fit(X, y)
 
-
-
-    joblib.dump(model, MODEL_PATH)
-
+    if not os.getenv("VERCEL"):
+        joblib.dump(model, MODEL_PATH)
     return model
 
 
@@ -614,7 +611,11 @@ except Exception as e:
 
 
 
-RESUME_FOLDER = "uploads/resumes"
+RESUME_FOLDER = (
+    os.path.join("/tmp", "student-ai-platform", "uploads", "resumes")
+    if os.getenv("VERCEL")
+    else "uploads/resumes"
+)
 
 
 
